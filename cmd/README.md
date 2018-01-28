@@ -42,18 +42,26 @@ This package provides implementation of ghctl commands. ghctl is using
 
 ## Repository
 
+```
 // TBD
+```
 
 ## Issue
 
+```
 // TBD
+```
 
 ## Pull-request
 
+```
 // TBD
+```
 
 ## Notification
 
+```
 // TBD
+```
 
 [0]: https://github.com/spf13/cobra
