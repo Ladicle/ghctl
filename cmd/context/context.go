@@ -1,4 +1,4 @@
-package user
+package context
 
 import (
 	"io"
@@ -8,11 +8,12 @@ import (
 
 // NewContextCmd create new cobra command to handle contexts.
 func NewContextCmd(out, errOut io.Writer) *cobra.Command {
-	userCmd := &cobra.Command{
+	cmd := &cobra.Command{
 		Use:     "context [OPTION] [COMMAND]",
 		Short:   "Manage context data for requesting GitHub API.",
 		Aliases: []string{"ctx"},
 	}
-	userCmd.AddCommand(newCreateCmd(out, errOut))
-	return userCmd
+	cmd.AddCommand(newCreateCmd(out, errOut))
+	cmd.AddCommand(newGetCmd(out, errOut))
+	return cmd
 }

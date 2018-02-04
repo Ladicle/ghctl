@@ -27,7 +27,7 @@ This package provides implementation of ghctl commands. ghctl is using
 
 | COMMANDS         | SHORT NAME   | DESCRIPTION                           |
 | :--------------- | ------------ | :------------------------------------ |
-| context          | -            | see [Context](#context)               |
+| context          | ctx          | see [Context](#context)               |
 | repository       | repo         | see [Repository](#repository)         |
 | issue            | -            | see [Issue](#issue)                   |
 | pull-request     | pr           | see [Pull-Request](#pull-request)     |
@@ -73,11 +73,21 @@ don't handle the context authentication. You have to get the access token manual
 ghctl context get [options] [context_name]
 ```
 
+`get` command outputs context data. If no arguments, all contexts are printed.
+Otherwise, specified context is printed. Also, you can chose output format.
+
+| OPTIONS    | ARGS      | DEFAULT                        | DESCRIPTION                                                        |
+| :--------- | ------    | ------------------------------ | :----------------------------------------------------------------- |
+| output     | json/yaml | yaml                           | Output format specification.                                       |
+
 ### Current Context
 
 ```
 ghctl context current [options]
 ```
+
+`current` command displays the current context for calling GitHub API.
+By setting the switch option, you can switch the current context.
 
 | OPTIONS    | ARGS   | DEFAULT                        | DESCRIPTION                                                        |
 | :--------- | ------ | ------------------------------ | :----------------------------------------------------------------- |

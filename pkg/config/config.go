@@ -56,7 +56,7 @@ func (c *Config) LoadConfig() error {
 	if err != nil {
 		return err
 	}
-	if err := yaml.Unmarshal(d, c.Ghctl); err != nil {
+	if err := yaml.Unmarshal(d, &c.Ghctl); err != nil {
 		return err
 	}
 	return nil
@@ -130,5 +130,25 @@ func (c *Config) SetCurrentContext(name string) error {
 		return fmt.Errorf("%s is not contained in contexts list.", name)
 	}
 	c.Ghctl.CurrentContext = name
+	return nil
+}
+
+// GetContexts returns all contexts.
+func GetContexts() []Context {
+	return c.Ghctl.Contexts
+}
+
+// GetContext returns the context matched specified name.
+func GetContext(name string) *Context {
+	return c.GetContext(name)
+}
+
+// GetContext returns the context matched specified name.
+func (c *Config) GetContext(name string) *Context {
+	for _, ctx := range c.Ghctl.Contexts {
+		if name == ctx.Name {
+			return &ctx
+		}
+	}
 	return nil
 }

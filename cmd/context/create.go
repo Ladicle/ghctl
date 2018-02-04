@@ -1,7 +1,6 @@
-package user
+package context
 
 import (
-	"context"
 	"io"
 
 	"fmt"
@@ -15,24 +14,27 @@ import (
 var defaultEndpoint = "https://api.github.com/graphql"
 
 type createOption struct {
-	Token    string
-	Endpoint string
-	Name     string
+	ClientGenerator func(token string) *github.Client
+	Token           string
+	Endpoint        string
+	Name            string
 }
 
 func newCreateCmd(out, errOut io.Writer) *cobra.Command {
-	c := createOption{}
-	createCmd := &cobra.Command{
-		Use:   "create [options...] <access_token>",
+	o := createOption{
+		ClientGenerator: github.NewClient,
+	}
+	cmd := &cobra.Command{
+		Use:   "create [options] <access_token>",
 		Short: "Create new context",
 		Run: func(cmd *cobra.Command, args []string) {
-			util.HandleCmdError(c.validate(args), errOut)
-			util.HandleCmdError(c.execute(out), errOut)
+			util.HandleCmdError(o.validate(args), errOut)
+			util.HandleCmdError(o.execute(out), errOut)
 		},
 	}
-	createCmd.Flags().StringVar(&c.Endpoint, "endpoint", defaultEndpoint, "GitHub API endpoint.")
-	createCmd.Flags().StringVar(&c.Name, "name", "", "Context identification.")
-	return createCmd
+	cmd.Flags().StringVar(&o.Endpoint, "endpoint", defaultEndpoint, "GitHub API endpoint.")
+	cmd.Flags().StringVar(&o.Name, "name", "", "Context identification.")
+	return cmd
 }
 
 func (o *createOption) validate(args []string) error {
@@ -47,16 +49,15 @@ func (o *createOption) validate(args []string) error {
 }
 
 func (o *createOption) execute(out io.Writer) error {
-	q := github.LoginQuery{}
-	cli := github.NewClient(o.Token)
-	if err := cli.Query(context.Background(), &q, nil); err != nil {
+	cli := o.ClientGenerator(o.Token)
+	q, err := cli.GetLogin()
+	if err != nil {
 		return err
 	}
 
 	if o.Name == "" {
 		o.Name = string(q.Viewer.Login)
 	}
-
 	if err := config.RegisterContext(config.Context{
 		Name:        o.Name,
 		AccessToken: o.Token,
