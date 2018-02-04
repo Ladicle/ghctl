@@ -27,7 +27,7 @@ This package provides implementation of ghctl commands. ghctl is using
 
 | COMMANDS         | SHORT NAME   | DESCRIPTION                           |
 | :--------------- | ------------ | :------------------------------------ |
-| context          | -            | see [Context](#context)               |
+| context          | ctx          | see [Context](#context)               |
 | repository       | repo         | see [Repository](#repository)         |
 | issue            | -            | see [Issue](#issue)                   |
 | pull-request     | pr           | see [Pull-Request](#pull-request)     |
