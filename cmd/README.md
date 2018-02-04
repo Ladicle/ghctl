@@ -10,7 +10,10 @@ This package provides implementation of ghctl commands. ghctl is using
     - [Global](#global)
         - [Commands](#commands-1)
         - [Options](#options)
-    - [Authentication](#authentication)
+    - [Context](#context)
+        - [Create Context](#create-context)
+        - [Get Context](#get-context)
+        - [Current Context](#current-context)
     - [Repository](#repository)
     - [Issue](#issue)
     - [Pull-request](#pull-request)
@@ -24,7 +27,7 @@ This package provides implementation of ghctl commands. ghctl is using
 
 | COMMANDS         | SHORT NAME   | DESCRIPTION                           |
 | :--------------- | ------------ | :------------------------------------ |
-| authentication   | auth         | see [Authentication](#authentication) |
+| context          | -            | see [Context](#context)               |
 | repository       | repo         | see [Repository](#repository)         |
 | issue            | -            | see [Issue](#issue)                   |
 | pull-request     | pr           | see [Pull-Request](#pull-request)     |
@@ -36,24 +39,72 @@ This package provides implementation of ghctl commands. ghctl is using
 | :--------- | ------------------- | :------------------------------------------------- |
 | ghconfig   | filePath <string>   | Path to the configuration file to use for ghctl.   |
 
-## Authentication
+## Context
 
-// TBD
+The context command manage context data for accessing to GitHub API. 
+
+```
+ghctl context [command]
+```
+
+| COMMANDS | description                     |
+| :------- | :-----------                    |
+| create   | see [Create](#create-context)   |
+| get      | see [Get](#get-context)         |
+| current  | see [Current](#current-context) |
+
+### Create Context
+
+```
+ghctl context create [options] <access_token>
+```
+
+`create` command save new context data to the configuration file. This command
+don't handle the context authentication. You have to get the access token manually.
+
+| OPTIONS    | ARGS   | DEFAULT                        | DESCRIPTION                                                        |
+| :--------- | ------ | ------------------------------ | :----------------------------------------------------------------- |
+| endpoint   | string | https://api.github.com/graphql | GitHub API endpoint. (Only GraphQL API is supported)               |
+| name       | string | `GitHub contextname`           | Context identification.                                            |
+
+### Get Context
+
+```
+ghctl context get [options] [context_name]
+```
+
+### Current Context
+
+```
+ghctl context current [options]
+```
+
+| OPTIONS    | ARGS   | DEFAULT                        | DESCRIPTION                                                        |
+| :--------- | ------ | ------------------------------ | :----------------------------------------------------------------- |
+| switch     | string | `context name`                 | Switch current context.                                            |
 
 ## Repository
 
+```
 // TBD
+```
 
 ## Issue
 
+```
 // TBD
+```
 
 ## Pull-request
 
+```
 // TBD
+```
 
 ## Notification
 
+```
 // TBD
+```
 
 [0]: https://github.com/spf13/cobra

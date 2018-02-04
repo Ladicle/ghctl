@@ -21,10 +21,11 @@ If you set `--ghconfig`, ghctl use the path.
 The configuration file write in the YAML style.
 
 ```yaml
-current-user: [name]
-users:
+current_context: [name]
+context:
   - name: <string>
     token: <string>
+    endpoint: <string>
 ```
 
 ### Directory architecture
