@@ -56,7 +56,7 @@ func (c *Config) LoadConfig() error {
 	if err != nil {
 		return err
 	}
-	if err := yaml.Unmarshal(d, c.Ghctl); err != nil {
+	if err := yaml.Unmarshal(d, &c.Ghctl); err != nil {
 		return err
 	}
 	return nil
