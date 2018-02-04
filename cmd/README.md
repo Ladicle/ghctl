@@ -92,6 +92,7 @@ By setting the switch option, you can switch the current context.
 | OPTIONS    | ARGS   | DEFAULT                        | DESCRIPTION                                                        |
 | :--------- | ------ | ------------------------------ | :----------------------------------------------------------------- |
 | switch     | string | `context name`                 | Switch current context.                                            |
+| simple     | bool   | false                          | Displays only current context name without description.            |
 
 ## Repository
 
