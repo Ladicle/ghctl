@@ -117,6 +117,16 @@ func (c *Config) RegisterContext(ctx Context) error {
 	return nil
 }
 
+// GetCurrentContext returns current context name.
+func GetCurrentContext() string {
+	return c.Ghctl.CurrentContext
+}
+
+// SetCurrentContext sets context for using in ghctl.
+func SetCurrentContext(name string) error {
+	return c.SetCurrentContext(name)
+}
+
 // SetCurrentContext sets context for using in ghctl.
 func (c *Config) SetCurrentContext(name string) error {
 	exists := false
