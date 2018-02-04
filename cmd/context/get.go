@@ -1,14 +1,12 @@
 package context
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 
 	"github.com/Ladicle/ghctl/pkg/config"
 	"github.com/Ladicle/ghctl/pkg/util"
 	"github.com/spf13/cobra"
-	yaml "gopkg.in/yaml.v2"
 )
 
 type getOption struct {
@@ -55,20 +53,10 @@ func (o *getOption) execute(out io.Writer) error {
 			return fmt.Errorf("%s is not exists.", o.ContextName)
 		}
 	}
-	if d, err := getPrettyOutput(o.Output, ctx); err != nil {
+	if d, err := util.GetPrettyOutput(o.Output, ctx); err != nil {
 		return err
 	} else {
 		fmt.Fprintf(out, "%s", string(d))
 	}
 	return nil
-}
-
-func getPrettyOutput(format string, v interface{}) ([]byte, error) {
-	if format == "yaml" {
-		return yaml.Marshal(v)
-	}
-	if format == "json" {
-		return json.MarshalIndent(v, "", "  ")
-	}
-	return []byte{}, fmt.Errorf("%s is unknown format.", format)
 }
