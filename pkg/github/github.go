@@ -16,9 +16,14 @@ func NewClient(token string) *Client {
 	}
 }
 
-// comment
-func (c *Client) GetLogin() (*LoginQuery, error) {
-	q := LoginQuery{}
+// GetLogin login to GitHub and returns username.
+func (c *Client) GetLogin() (string, error) {
+	var q struct {
+		Viewer struct {
+			Login githubql.String
+		}
+	}
 	err := c.GQL.Query(context.Background(), &q, nil)
-	return &q, err
+	return string(q.Viewer.Login), err
+}
 }

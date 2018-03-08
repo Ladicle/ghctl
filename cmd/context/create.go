@@ -50,13 +50,13 @@ func (o *createOption) validate(args []string) error {
 
 func (o *createOption) execute(out io.Writer) error {
 	cli := o.ClientGenerator(o.Token)
-	q, err := cli.GetLogin()
+	l, err := cli.GetLogin()
 	if err != nil {
 		return err
 	}
 
 	if o.Name == "" {
-		o.Name = string(q.Viewer.Login)
+		o.Name = l
 	}
 	if err := config.RegisterContext(config.Context{
 		Name:        o.Name,
