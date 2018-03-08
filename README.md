@@ -7,8 +7,9 @@ The ghctl CLI tool for GitHub notifications, issue and pull-requests.
 
 - [ghctl](#ghctl)
     - [Install](#install)
-    - [Usage](#usage)
     - [Quick Starts](#quick-starts)
+        - [Add a new context](#add-a-new-context)
+        - [Get Pull-Requests](#get-pull-requests)
     - [Complete documentation](#complete-documentation)
 
 <!-- markdown-toc end -->
