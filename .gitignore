@@ -1,3 +1,10 @@
 vendor
 ghctl
+
+# for Emacs
 .dir-locals.el
+
+# for Gtags
+GPATH
+GRTAGS
+GTAGS
