@@ -30,7 +30,7 @@ func newGetCmd(out, errOut io.Writer) *cobra.Command {
 
 func (o *getOption) validate(args []string) error {
 	if o.Output != "yaml" && o.Output != "json" {
-		return fmt.Errorf("%s is unknown output format.", o.Output)
+		return fmt.Errorf("%s is unknown output format", o.Output)
 	}
 	switch len(args) {
 	case 0:
@@ -50,7 +50,7 @@ func (o *getOption) execute(out io.Writer) error {
 	} else {
 		ctx = config.GetContext(o.ContextName)
 		if ctx.(*config.Context) == nil {
-			return fmt.Errorf("%s is not exists.", o.ContextName)
+			return fmt.Errorf("%s is not exists", o.ContextName)
 		}
 	}
 	if d, err := util.GetPrettyOutput(o.Output, ctx); err != nil {
