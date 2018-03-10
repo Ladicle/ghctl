@@ -9,9 +9,15 @@ type Client struct {
 	GQL *githubql.Client
 }
 
-// LoginQuery is GraphQL query to get username.
-type LoginQuery struct {
-	Viewer struct {
-		Login githubql.String
-	}
+// Organization represents GitHub organization data.
+type Organization struct {
+	Name         string
+	Repositories []Repository
+}
+
+// Repository represents GitHub repository data.
+type Repository struct {
+	Name   string
+	ID     string
+	Labels []string
 }
