@@ -32,8 +32,8 @@ func newListCmd(out, errOut io.Writer) *cobra.Command {
 	}
 
 	cmd.Flags().BoolVar(&o.Cache, "cache", false, "Use cache.")
-	cmd.Flags().StringVar(&o.Output, "match", "", "Show matched repository data.")
-	cmd.Flags().StringVar(&o.Output, "output", "", "Output format.")
+	cmd.Flags().StringVar(&o.Match, "match", "", "Show matched repository data.")
+	cmd.Flags().StringVarP(&o.Output, "output", "o", "", "Output format.")
 	return cmd
 }
 

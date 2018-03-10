@@ -33,7 +33,7 @@ func newGetCmd(out, errOut io.Writer) *cobra.Command {
 	}
 
 	cmd.Flags().BoolVar(&o.Cache, "cache", false, "Use cache.")
-	cmd.Flags().StringVar(&o.Output, "output", "yaml", "Output format.")
+	cmd.Flags().StringVarP(&o.Output, "output", "o", "yaml", "Output format.")
 	return cmd
 }
 
