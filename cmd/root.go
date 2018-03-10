@@ -5,6 +5,7 @@ import (
 	"os"
 
 	cctx "github.com/Ladicle/ghctl/cmd/context"
+	crepo "github.com/Ladicle/ghctl/cmd/repository"
 	"github.com/Ladicle/ghctl/pkg/config"
 	"github.com/Ladicle/ghctl/pkg/util"
 	"github.com/spf13/cobra"
@@ -29,6 +30,7 @@ func newRootCmd(out, errOut io.Writer) *cobra.Command {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "ghconfig", "", "config file (default: $HOME/.ghctl/config)")
 	rootCmd.AddCommand(NewVersionCmd(out, errOut))
 	rootCmd.AddCommand(cctx.NewContextCmd(out, errOut))
+	rootCmd.AddCommand(crepo.NewRepositoryCmd(out, errOut))
 	return rootCmd
 }
 

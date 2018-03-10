@@ -14,5 +14,6 @@ func NewRepositoryCmd(out, errOut io.Writer) *cobra.Command {
 		Aliases: []string{"repo"},
 	}
 	cmd.AddCommand(newGetCmd(out, errOut))
+	cmd.AddCommand(newListCmd(out, errOut))
 	return cmd
 }
