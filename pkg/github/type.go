@@ -19,5 +19,5 @@ type Organization struct {
 type Repository struct {
 	Name   string
 	ID     string
-	Labels []string
+	Topics []string
 }
