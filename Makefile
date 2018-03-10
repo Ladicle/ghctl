@@ -32,3 +32,6 @@ build_darwin64:
 
 build_linux64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w -X github.com/Ladicle/ghctl/cmd.version=$(VERSION) -X github.com/Ladicle/ghctl/cmd.gitRepo=$(REPO_INFO)"
+
+install:
+	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go install -ldflags "-w -X github.com/Ladicle/ghctl/cmd.version=$(VERSION) -X github.com/Ladicle/ghctl/cmd.gitRepo=$(REPO_INFO)"
