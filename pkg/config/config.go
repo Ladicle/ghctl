@@ -5,10 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"io/ioutil"
-
+	"github.com/Ladicle/ghctl/pkg/util"
 	homedir "github.com/mitchellh/go-homedir"
-	yaml "gopkg.in/yaml.v2"
 )
 
 var c = Config{}
@@ -34,11 +32,11 @@ func SetDefaultConfigFile() error {
 
 // SetDefaultConfigFile sets default configuration path to ConfigFile.
 func (c *Config) SetDefaultConfigFile() error {
-	if home, err := homedir.Dir(); err != nil {
+	home, err := homedir.Dir()
+	if err != nil {
 		return err
-	} else {
-		c.ConfigFile = fmt.Sprintf("%s/.ghctl/config", home)
 	}
+	c.ConfigFile = filepath.Join(home, ".ghctl", "config")
 	return nil
 }
 
@@ -49,17 +47,7 @@ func LoadConfig() error {
 
 // LoadConfig loads configuration data from the ConfigFile.
 func (c *Config) LoadConfig() error {
-	if _, err := os.Stat(c.ConfigFile); os.IsNotExist(err) {
-		return nil
-	}
-	d, err := ioutil.ReadFile(c.ConfigFile)
-	if err != nil {
-		return err
-	}
-	if err := yaml.Unmarshal(d, &c.Ghctl); err != nil {
-		return err
-	}
-	return nil
+	return util.LoadYAML(c.ConfigFile, &c.Ghctl)
 }
 
 // SaveConfig saves configuration data to the ConfigFile.
@@ -68,26 +56,11 @@ func SaveConfig() (err error) {
 }
 
 // SaveConfig saves configuration data to the ConfigFile.
-func (c *Config) SaveConfig() (err error) {
-	data, err := yaml.Marshal(c.Ghctl)
-	if err != nil {
+func (c *Config) SaveConfig() error {
+	if err := util.MkDirAllIfNotExist(c.ConfigFile); err != nil {
 		return err
 	}
-	dir := filepath.Dir(c.ConfigFile)
-	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		if err := os.Mkdir(dir, 0777); err != nil {
-			return err
-		}
-	}
-
-	f, err := os.OpenFile(c.ConfigFile, os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		return err
-	}
-	defer func() { err = f.Close() }()
-	f.Write(data)
-
-	return nil
+	return util.WriteYAML(c.ConfigFile, c.Ghctl)
 }
 
 // RegisterContext registers a new context to contexts list.
