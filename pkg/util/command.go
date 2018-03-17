@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	yaml "gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 )
 
 // HandleCmdError handles command processing error.
@@ -27,5 +27,5 @@ func GetPrettyOutput(format string, v interface{}) ([]byte, error) {
 	if format == "json" {
 		return json.MarshalIndent(v, "", "  ")
 	}
-	return []byte{}, fmt.Errorf("%s is unknown format.", format)
+	return nil, fmt.Errorf("%s is unknown format", format)
 }
