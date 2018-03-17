@@ -76,8 +76,7 @@ func (c *Config) RegisterContext(ctx Context) error {
 	for _, v := range c.Ghctl.Contexts {
 		if v.Name == ctx.Name {
 			return fmt.Errorf(
-				"%s has already used by other contexts.",
-				"The context name must be unique.",
+				"%s has already used by other contexts",
 				ctx.Name)
 		}
 	}
@@ -110,7 +109,7 @@ func (c *Config) SetCurrentContext(name string) error {
 		}
 	}
 	if !exists {
-		return fmt.Errorf("%s is not contained in contexts list.", name)
+		return fmt.Errorf("%s is not contained in contexts list", name)
 	}
 	c.Ghctl.CurrentContext = name
 	return nil
