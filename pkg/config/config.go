@@ -9,63 +9,70 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 )
 
-var c = Config{}
+var gConf = Config{}
 
-// SetConfigFile sets configuration path to the variable.
-func SetConfigFile(path string) error {
-	return c.SetConfigFile(path)
+// SetConfigDir sets configuration directory to the variable.
+func SetConfigDir(path string) error {
+	return gConf.SetConfigDir(path)
 }
 
-// SetConfigFile sets configuration path to the variable.
-func (c *Config) SetConfigFile(path string) error {
-	if _, err := os.Stat(path); os.IsNotExist(err) {
+// SetConfigDir sets configuration directory to the variable.
+func (c *Config) SetConfigDir(path string) error {
+	if stat, err := os.Stat(path); os.IsNotExist(err) {
 		return fmt.Errorf("%v is not exists", path)
+	} else if !stat.IsDir() {
+		return fmt.Errorf("%v is not directory", path)
 	}
-	c.ConfigFile = path
+	c.ConfigDir = path
 	return nil
 }
 
-// SetDefaultConfigFile sets default configuration path to ConfigFile.
-func SetDefaultConfigFile() error {
-	return c.SetDefaultConfigFile()
+// SetDefaultConfigDir sets default configuration directory to ConfigDir.
+func SetDefaultConfigDir() error {
+	return gConf.SetDefaultConfigDir()
 }
 
-// SetDefaultConfigFile sets default configuration path to ConfigFile.
-func (c *Config) SetDefaultConfigFile() error {
+// SetDefaultConfigDir sets default configuration directory to ConfigDir.
+func (c *Config) SetDefaultConfigDir() error {
 	home, err := homedir.Dir()
 	if err != nil {
 		return err
 	}
-	c.ConfigFile = filepath.Join(home, ".ghctl", "config")
+	c.ConfigDir = filepath.Join(home, defaultDirName)
 	return nil
+}
+
+func getConfigFilePath(configDir string) string {
+	return filepath.Join(configDir, configFileName)
 }
 
 // LoadConfig loads configuration data from the ConfigFile.
 func LoadConfig() error {
-	return c.LoadConfig()
+	return gConf.LoadConfig()
 }
 
 // LoadConfig loads configuration data from the ConfigFile.
 func (c *Config) LoadConfig() error {
-	return util.LoadYAML(c.ConfigFile, &c.Ghctl)
+	return util.LoadYAML(getConfigFilePath(c.ConfigDir), &c.Ghctl)
 }
 
 // SaveConfig saves configuration data to the ConfigFile.
 func SaveConfig() (err error) {
-	return c.SaveConfig()
+	return gConf.SaveConfig()
 }
 
 // SaveConfig saves configuration data to the ConfigFile.
 func (c *Config) SaveConfig() error {
-	if err := util.MkDirAllIfNotExist(c.ConfigFile); err != nil {
+	path := getConfigFilePath(c.ConfigDir)
+	if err := util.MkDirAllIfNotExist(path); err != nil {
 		return err
 	}
-	return util.WriteYAML(c.ConfigFile, c.Ghctl)
+	return util.WriteYAML(path, c.Ghctl)
 }
 
 // RegisterContext registers a new context to contexts list.
 func RegisterContext(ctx Context) error {
-	return c.RegisterContext(ctx)
+	return gConf.RegisterContext(ctx)
 }
 
 // RegisterContext registers a new context to contexts list.
@@ -91,12 +98,17 @@ func (c *Config) RegisterContext(ctx Context) error {
 
 // GetCurrentContext returns current context.
 func GetCurrentContext() *Context {
-	return GetContext(c.Ghctl.CurrentContext)
+	return gConf.GetCurrentContext()
+}
+
+// GetCurrentContext returns current context.
+func (c *Config) GetCurrentContext() *Context {
+	return c.GetContext(c.Ghctl.CurrentContext)
 }
 
 // SetCurrentContext sets context for using in ghctl.
 func SetCurrentContext(name string) error {
-	return c.SetCurrentContext(name)
+	return gConf.SetCurrentContext(name)
 }
 
 // SetCurrentContext sets context for using in ghctl.
@@ -117,12 +129,12 @@ func (c *Config) SetCurrentContext(name string) error {
 
 // GetContexts returns all contexts.
 func GetContexts() []Context {
-	return c.Ghctl.Contexts
+	return gConf.Ghctl.Contexts
 }
 
 // GetContext returns the context matched specified name.
 func GetContext(name string) *Context {
-	return c.GetContext(name)
+	return gConf.GetContext(name)
 }
 
 // GetContext returns the context matched specified name.
