@@ -1,0 +1,8 @@
+current_context: "test2"
+contexts:
+  - name: "test1"
+    access_token: "dummy_token1"
+    endpoint: "http://example.com"
+  - name: "test2"
+    access_token: "dummy_token2"
+    endpoint: "http://example.com"
