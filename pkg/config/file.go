@@ -1,11 +1,11 @@
-package util
+package config
 
 import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
 
-	yaml "gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 )
 
 // LoadYAML reads data from YAML file and expand it to `out`.

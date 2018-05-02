@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Ladicle/ghctl/pkg/util"
 	homedir "github.com/mitchellh/go-homedir"
 )
 
@@ -53,7 +52,7 @@ func LoadConfig() error {
 
 // LoadConfig loads configuration data from the ConfigFile.
 func (c *Config) LoadConfig() error {
-	return util.LoadYAML(getConfigFilePath(c.ConfigDir), &c.Ghctl)
+	return LoadYAML(getConfigFilePath(c.ConfigDir), &c.Ghctl)
 }
 
 // SaveConfig saves configuration data to the ConfigFile.
@@ -64,10 +63,10 @@ func SaveConfig() (err error) {
 // SaveConfig saves configuration data to the ConfigFile.
 func (c *Config) SaveConfig() error {
 	path := getConfigFilePath(c.ConfigDir)
-	if err := util.MkDirAllIfNotExist(path); err != nil {
+	if err := MkDirAllIfNotExist(path); err != nil {
 		return err
 	}
-	return util.WriteYAML(path, c.Ghctl)
+	return WriteYAML(path, c.Ghctl)
 }
 
 // RegisterContext registers a new context to contexts list.
