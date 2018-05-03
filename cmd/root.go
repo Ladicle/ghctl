@@ -4,15 +4,15 @@ import (
 	"io"
 	"os"
 
-	cctx "github.com/Ladicle/ghctl/cmd/context"
-	crepo "github.com/Ladicle/ghctl/cmd/repository"
+	"github.com/Ladicle/ghctl/cmd/ctx"
+	"github.com/Ladicle/ghctl/cmd/repo"
 	"github.com/Ladicle/ghctl/pkg/config"
 	"github.com/Ladicle/ghctl/pkg/util"
 	"github.com/spf13/cobra"
 )
 
 var (
-	cfgFile string
+	cfgDir string
 
 	// These variables are set at the build time.
 	version string
@@ -25,12 +25,11 @@ func newRootCmd(out, errOut io.Writer) *cobra.Command {
 		Short: "Read GitHub notifications, issues and pull-requests.",
 		Long:  "The ghctl CLI tool for GitHub notifications, issue and pull-requests.",
 	}
-
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "ghconfig", "", "config file (default: $HOME/.ghctl/config)")
+	rootCmd.PersistentFlags().StringVar(&cfgDir, "ghconfig", "", "config directory (default: $HOME/.ghctl)")
 	rootCmd.AddCommand(NewVersionCmd(out, errOut))
-	rootCmd.AddCommand(cctx.NewContextCmd(out, errOut))
-	rootCmd.AddCommand(crepo.NewRepositoryCmd(out, errOut))
+	rootCmd.AddCommand(ctx.NewContextCmd(out, errOut))
+	rootCmd.AddCommand(repo.NewRepositoryCmd(out, errOut))
 	return rootCmd
 }
 
@@ -42,10 +41,10 @@ func Execute() {
 
 func initConfig() {
 	errOut := os.Stderr
-	if cfgFile != "" {
-		util.HandleCmdError(config.SetConfigFile(cfgFile), errOut)
+	util.HandleCmdError(config.SetConfigDir(cfgDir), errOut)
+	if cfgDir != "" {
 	} else {
-		util.HandleCmdError(config.SetDefaultConfigFile(), errOut)
+		util.HandleCmdError(config.SetDefaultConfigDir(), errOut)
 	}
 	util.HandleCmdError(config.LoadConfig(), errOut)
 }
