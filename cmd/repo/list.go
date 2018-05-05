@@ -1,9 +1,8 @@
-package repository
+package repo
 
 import (
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/Ladicle/ghctl/pkg/config"
 	"github.com/Ladicle/ghctl/pkg/github"
@@ -11,21 +10,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
-type getOption struct {
+type listOption struct {
 	ClientGenerator func(token string) *github.Client
 	Organization    string
-	Repository      string
 	Cache           bool
+	Match           string
 	Output          string
 }
 
-func newGetCmd(out, errOut io.Writer) *cobra.Command {
-	o := getOption{
+func newListCmd(out, errOut io.Writer) *cobra.Command {
+	o := listOption{
 		ClientGenerator: github.NewClient,
 	}
 	cmd := &cobra.Command{
-		Use:   "get [options] <org/repository>",
-		Short: "Outputs repository data",
+		Use:   "list [options] <organization>",
+		Short: "lists repositories",
 		Run: func(cmd *cobra.Command, args []string) {
 			util.HandleCmdError(o.validate(args), errOut)
 			util.HandleCmdError(o.execute(out), errOut)
@@ -33,20 +32,16 @@ func newGetCmd(out, errOut io.Writer) *cobra.Command {
 	}
 
 	cmd.Flags().BoolVar(&o.Cache, "cache", false, "Use cache.")
-	cmd.Flags().StringVarP(&o.Output, "output", "o", "yaml", "Output format.")
+	cmd.Flags().StringVar(&o.Match, "match", "", "Show matched repository data.")
+	cmd.Flags().StringVarP(&o.Output, "output", "o", "", "Output format.")
 	return cmd
 }
 
-func (o *getOption) validate(args []string) error {
-	if len(args) < 1 {
-		return fmt.Errorf("target repository is required")
-	}
-
-	orgRepo := strings.Split(args[0], "/")
-	if len(orgRepo) == 2 {
-		o.Organization, o.Repository = orgRepo[0], orgRepo[1]
+func (o *listOption) validate(args []string) error {
+	if len(args) == 1 {
+		o.Organization = args[0]
 	} else {
-		return fmt.Errorf("%s is not right 'org/repo' format", args[0])
+		return fmt.Errorf("organization is required")
 	}
 
 	if o.Output != "yaml" && o.Output != "json" {
@@ -55,23 +50,25 @@ func (o *getOption) validate(args []string) error {
 	return nil
 }
 
-func (o *getOption) execute(out io.Writer) error {
-	var repo *github.Repository
+func (o *listOption) execute(out io.Writer) error {
+	var org *github.Organization
 	if o.Cache {
 		// TODO: get data from cache
 		return fmt.Errorf("cache option have not implemented yet")
 	} else {
 		cli := o.ClientGenerator(config.GetCurrentContext().AccessToken)
-		newRepo, err := cli.GetRepository(o.Organization, o.Repository)
+		newOrg, err := cli.GetOrganization(o.Organization)
 		if err != nil {
 			return err
 		}
-		repo = newRepo
+		org = newOrg
 
 		// TODO: update cache
 	}
 
-	if d, err := util.GetPrettyOutput(o.Output, *repo); err != nil {
+	// TODO: filter repositories by match
+
+	if d, err := util.GetPrettyOutput(o.Output, *org); err != nil {
 		return err
 	} else {
 		fmt.Fprintf(out, "%s", string(d))
