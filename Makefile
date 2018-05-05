@@ -1,4 +1,4 @@
-.PHONY: dep build
+.PHONY: dep build build_darwin64 build_linux64 install
 
 # REPO_INFO is the URL of git repository.
 REPO_INFO ?= $(shell git config --get remote.origin.url)
