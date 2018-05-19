@@ -1,5 +1,6 @@
 vendor
 ghctl
+build
 
 # for Emacs
 .dir-locals.el

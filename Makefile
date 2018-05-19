@@ -21,17 +21,26 @@ ifeq ($(UNAME_M),i686)
 	ARCH=386
 endif
 
+PKGROOT = github.com/Ladicle/ghctl
+OUT = ./build
+
 dep:
 	dep ensure -update
 
 build:
-	CGO_ENABLED=0 GOOS=${OS} GOARCH=${ARCH} go build -ldflags "-w -X github.com/Ladicle/ghctl/cmd.version=$(VERSION) -X github.com/Ladicle/ghctl/cmd.gitRepo=$(REPO_INFO)"
+	CGO_ENABLED=0 GOOS=${OS} GOARCH=${ARCH} \
+	go build -ldflags "-w -X $(PKGROOT)/cmd.version=$(VERSION) -X $(PKGROOT)/cmd.gitRepo=$(REPO_INFO)"
 
 build_darwin64:
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "-w -X github.com/Ladicle/ghctl/cmd.version=$(VERSION) -X github.com/Ladicle/ghctl/cmd.gitRepo=$(REPO_INFO)"
+	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 \
+	go build -o $(OUT)/ghctl_amd64 \
+           -ldflags "-w -X $(PKGROOT)/cmd.version=$(VERSION) -X $(PKGROOT)/cmd.gitRepo=$(REPO_INFO)"
 
 build_linux64:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-w -X github.com/Ladicle/ghctl/cmd.version=$(VERSION) -X github.com/Ladicle/ghctl/cmd.gitRepo=$(REPO_INFO)"
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+	go build -o $(OUT)/ghctl_linux64 \
+	         -ldflags "-w -X $(PKGROOT)/cmd.version=$(VERSION) -X $(PKGROOT)/cmd.gitRepo=$(REPO_INFO)"
 
 install:
-	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) go install -ldflags "-w -X github.com/Ladicle/ghctl/cmd.version=$(VERSION) -X github.com/Ladicle/ghctl/cmd.gitRepo=$(REPO_INFO)"
+	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) \
+	go install -ldflags "-w -X $(PKGROOT)/cmd.version=$(VERSION) -X $(PKGROOT)/cmd.gitRepo=$(REPO_INFO)"
