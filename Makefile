@@ -1,4 +1,4 @@
-.PHONY: dep build build_darwin64 build_linux64 install
+.PHONY: dep build build_darwin64 build_linux64 install test
 
 # REPO_INFO is the URL of git repository.
 REPO_INFO ?= $(shell git config --get remote.origin.url)
@@ -44,3 +44,6 @@ build_linux64:
 install:
 	CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) \
 	go install -ldflags "-w -X $(PKGROOT)/cmd.version=$(VERSION) -X $(PKGROOT)/cmd.gitRepo=$(REPO_INFO)"
+
+test:
+	go test $(PKGROOT)/...
