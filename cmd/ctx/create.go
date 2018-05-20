@@ -39,10 +39,7 @@ func newCreateCmd(out, errOut io.Writer) *cobra.Command {
 
 func (o *createOption) validate(args []string) error {
 	if got, want := len(args), 1; got != want {
-		return fmt.Errorf(
-			"invalid number of arguments.",
-			"want=%v, but got=%v",
-			want, got)
+		return fmt.Errorf("invalid number of arguments: want=%v, got=%v", want, got)
 	}
 	o.Token = args[0]
 	return nil
