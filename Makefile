@@ -33,7 +33,7 @@ build:
 
 build_darwin64:
 	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 \
-	go build -o $(OUT)/ghctl_amd64 \
+	go build -o $(OUT)/ghctl_darwin64 \
            -ldflags "-w -X $(PKGROOT)/cmd.version=$(VERSION) -X $(PKGROOT)/cmd.gitRepo=$(REPO_INFO)"
 
 build_linux64:
