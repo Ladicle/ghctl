@@ -31,6 +31,10 @@ func TestSetDefaultConfigDir(t *testing.T) {
 
 func TestLoadAndSaveConfig(t *testing.T) {
 	config := Config{}
+	if err := config.LoadConfig(); err != nil {
+		t.Fatalf("failed config.LoadConfig() when config file is not exists: %v", err)
+	}
+
 	config.ConfigDir = "./fixtures"
 	if err := config.LoadConfig(); err != nil {
 		t.Fatalf("could not read config: %v", err)

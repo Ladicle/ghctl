@@ -52,7 +52,10 @@ func LoadConfig() error {
 
 // LoadConfig loads configuration data from the ConfigFile.
 func (c *Config) LoadConfig() error {
-	return LoadYAML(getConfigFilePath(c.ConfigDir), &c.Ghctl)
+	if err := LoadYAML(getConfigFilePath(c.ConfigDir), &c.Ghctl); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	return nil
 }
 
 // SaveConfig saves configuration data to the ConfigFile.

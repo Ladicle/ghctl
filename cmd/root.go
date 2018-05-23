@@ -41,8 +41,8 @@ func Execute() {
 
 func initConfig() {
 	errOut := os.Stderr
-	util.HandleCmdError(config.SetConfigDir(cfgDir), errOut)
 	if cfgDir != "" {
+		util.HandleCmdError(config.SetConfigDir(cfgDir), errOut)
 	} else {
 		util.HandleCmdError(config.SetDefaultConfigDir(), errOut)
 	}
