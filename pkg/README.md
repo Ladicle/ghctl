@@ -13,7 +13,7 @@
 ## Configuration
 
 `config` package manage configurations for ghctl.
-The configuration directory locates `$HOME/.ghctl/config` in default.
+The configuration directory locates `$HOME/.ghctl` in default.
 If you set `--ghconfig`, ghctl use the path.
 
 ### Configuration format
@@ -24,7 +24,7 @@ The configuration file write in the YAML style.
 current_context: [name]
 context:
   - name: <string>
-    token: <string>
+    access_token: <string>
     endpoint: <string>
 ```
 
