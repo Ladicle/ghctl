@@ -16,8 +16,10 @@ The ghctl CLI tool for GitHub notifications, issue and pull-requests.
 
 ## Install
 
+Clone this repository, and run the following make command.
+
 ```
-// TBD
+❯❯❯ make install
 ```
 
 ## Quick Starts
@@ -32,16 +34,6 @@ OAuth scopes require only `repo` and `read:org`. After that run the following co
 ```
 ❯❯❯ ghctl ctx create <ACCESS TOKEN>
 Register <NAME> context is successfully.
-```
-
-### Get Pull-Requests
-
-```
-❯❯❯ ghctl pr get --repo-match "status = open & count(LGTM*) = 5" --pr-match "status = open" Ladicle/*
-
-REPOSITORY   TITLE     LABELS                   URL
-dotfiles     piyoyoy   LGTM-ladicle,waitReview  http://github.com/Ladicle
-emacs.d      hogegho                            http://github.com/Ladicle
 ```
 
 ## Complete documentation
